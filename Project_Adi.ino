@@ -27,7 +27,7 @@
 #define PZEM1_RX_PIN    12          // D6   NodeMcu
 #define PZEM1_TX_PIN    13          // D7   NodeMcu
 
-#define PZEM2_RX_PIN    4           // D2   NodeMcu
+#define PZEM2_RX_PIN    16          // D0   NodeMcu
 #define PZEM2_TX_PIN    14          // D5   NodeMcu
 
 /*  REDEFINED   */
