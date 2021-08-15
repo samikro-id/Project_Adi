@@ -2,6 +2,7 @@
  * @file        : Project_Adi.ino
  * @brief       : NodeMcu
  * @revision    : 0.0.0
+ * @date        : 15 August 2021
  * @environment : Arduino 1.8.13
  * @supported by: Samikro.id
  * **********************************************************/
@@ -87,21 +88,19 @@ void loop() {
     if((millis() - sensor_time) >= SENSOR_UPDATE){
         sensor_time += SENSOR_UPDATE;
 
-        if(readPzem1() == true){
-            Serial.println();
-            Blynk.virtualWrite(V0, pzem1Data.power);
-            Blynk.virtualWrite (V1, pzem1Data.energy);
-            Blynk.virtualWrite(V2, pzem1Data.voltage);
-            Blynk.virtualWrite (V3, pzem1Data.current);
-        }
+        readPzem1();
+        Serial.println();
+        Blynk.virtualWrite(V0, pzem1Data.power);
+        Blynk.virtualWrite (V1, pzem1Data.energy);
+        Blynk.virtualWrite(V2, pzem1Data.voltage);
+        Blynk.virtualWrite (V3, pzem1Data.current);
 
-        if(readPzem2() == true){
-            Serial.println();
-            Blynk.virtualWrite(V4, pzem2Data.power);
-            Blynk.virtualWrite (V5, pzem2Data.energy);
-            Blynk.virtualWrite(V6, pzem2Data.voltage);
-            Blynk.virtualWrite (V7, pzem2Data.current);
-        }   
+        readPzem2();
+        Serial.println();
+        Blynk.virtualWrite(V4, pzem2Data.power);
+        Blynk.virtualWrite (V5, pzem2Data.energy);
+        Blynk.virtualWrite(V6, pzem2Data.voltage);
+        Blynk.virtualWrite (V7, pzem2Data.current);
     }
     
     Blynk.run();
@@ -119,13 +118,15 @@ bool readPzem1(){
     pzem.frequency  = pzem1.frequency();    // baca frequency
     pzem.pf         = pzem1.pf();           // baca power factor (pf)
 
-    // jika salah satu nilai tidak valid / isnan, abaikan data yang lain
-    if(isnan(pzem.voltage))         valid = false;  
-    else if(isnan(pzem.current))    valid = false;
-    else if(isnan(pzem.power))      valid = false;
-    else if(isnan(pzem.energy))     valid = false;
-    else if(isnan(pzem.frequency))  valid = false;
-    else if(isnan(pzem.pf))         valid = false;
+    if(isnan(pzem.voltage) || isnan(pzem.current || isnan(pzem.power) 
+        || isnan(pzem.energy) || isnan(pzem.frequency) || isnan(pzem.pf)){
+        pzem1Data.voltage    = 0;
+        pzem1Data.current    = 0;
+        pzem1Data.power      = 0;
+        pzem1Data.energy     = 0;
+        pzem1Data.frequency  = 0;
+        pzem1Data.pf         = 0;
+    }           
     else{
         pzem1Data.voltage    = pzem.voltage;
         pzem1Data.current    = pzem.current;
@@ -165,13 +166,15 @@ bool readPzem2(){
     pzem.frequency  = pzem2.frequency();    // baca frequency
     pzem.pf         = pzem2.pf();           // baca power factor (pf)
 
-    // jika salah satu nilai tidak valid / isnan, abaikan data yang lain
-    if(isnan(pzem.voltage))         valid = false;
-    else if(isnan(pzem.current))    valid = false;
-    else if(isnan(pzem.power))      valid = false;
-    else if(isnan(pzem.energy))     valid = false;
-    else if(isnan(pzem.frequency))  valid = false;
-    else if(isnan(pzem.pf))         valid = false;
+    if(isnan(pzem.voltage) || isnan(pzem.current || isnan(pzem.power) 
+        || isnan(pzem.energy) || isnan(pzem.frequency) || isnan(pzem.pf)){
+        pzem2Data.voltage    = 0;
+        pzem2Data.current    = 0;
+        pzem2Data.power      = 0;
+        pzem2Data.energy     = 0;
+        pzem2Data.frequency  = 0;
+        pzem2Data.pf         = 0;
+    }
     else{
         pzem2Data.voltage    = pzem.voltage;
         pzem2Data.current    = pzem.current;
@@ -184,7 +187,7 @@ bool readPzem2(){
     }
 
     if(valid){
-        Serial.println("------------ PZEM1 -----------");
+        Serial.println("------------ PZEM2 -----------");
         Serial.print(pzem2Data.voltage, 2);         Serial.println("V");
         Serial.print(pzem2Data.current, 3);         Serial.println("A");
         Serial.print(pzem2Data.power, 2);           Serial.println("W");
