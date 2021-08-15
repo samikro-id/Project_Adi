@@ -118,7 +118,7 @@ bool readPzem1(){
     pzem.frequency  = pzem1.frequency();    // baca frequency
     pzem.pf         = pzem1.pf();           // baca power factor (pf)
 
-    if(isnan(pzem.voltage) || isnan(pzem.current || isnan(pzem.power) 
+    if(isnan(pzem.voltage) || isnan(pzem.current) || isnan(pzem.power) 
         || isnan(pzem.energy) || isnan(pzem.frequency) || isnan(pzem.pf)){
         pzem1Data.voltage    = 0;
         pzem1Data.current    = 0;
@@ -166,7 +166,7 @@ bool readPzem2(){
     pzem.frequency  = pzem2.frequency();    // baca frequency
     pzem.pf         = pzem2.pf();           // baca power factor (pf)
 
-    if(isnan(pzem.voltage) || isnan(pzem.current || isnan(pzem.power) 
+    if(isnan(pzem.voltage) || isnan(pzem.current)|| isnan(pzem.power) 
         || isnan(pzem.energy) || isnan(pzem.frequency) || isnan(pzem.pf)){
         pzem2Data.voltage    = 0;
         pzem2Data.current    = 0;
